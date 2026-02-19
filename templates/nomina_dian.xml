@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NominaIndividual
+    xmlns="dian:gov:co:facturaelectronica:NominaIndividual"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+    xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
+    xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
+    xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#"
+    xsi:schemaLocation="dian:gov:co:facturaelectronica:NominaIndividual NominaIndividualDeAjusteRelacionada.xsd">
+
+    <ext:UBLExtensions>
+        <ext:UBLExtension>
+            <ext:ExtensionContent>
+            </ext:ExtensionContent>
+        </ext:UBLExtension>
+    </ext:UBLExtensions>
+
+    <Novedad CUNENovedad="{{ Novedad.CUNENovedad }}">false</Novedad>
+
+    <Periodo
+        FechaIngreso="{{ Periodo.FechaIngreso }}"
+        FechaLiquidacionInicio="{{ Periodo.FechaLiquidacionInicio }}"
+        FechaLiquidacionFin="{{ Periodo.FechaLiquidacionFin }}"
+        TiempoLaborado="{{ Periodo.TiempoLaborado }}"
+        FechaGen="{{ Periodo.FechaGen }}" />
+
+    <NumeroSecuenciaXML
+        Consecutivo="{{ NumeroSecuenciaXML.Consecutivo }}"
+        Numero="{{ NumeroSecuenciaXML.Numero }}"
+        Prefijo="{{ NumeroSecuenciaXML.Prefijo }}" />
+
+    <LugarGeneracionXML
+        Pais="{{ LugarGeneracionXML.Pais }}"
+        DepartamentoEstado="{{ LugarGeneracionXML.DepartamentoEstado }}"
+        MunicipioCiudad="{{ LugarGeneracionXML.MunicipioCiudad }}"
+        Idioma="es" />
+
+    <ProveedorXML
+        RazonSocial="{{ ProveedorXML.RazonSocial }}"
+        PrimerApellido="{{ ProveedorXML.PrimerApellido }}"
+        PrimerNombre="{{ ProveedorXML.PrimerNombre }}"
+        NIT="{{ ProveedorXML.NIT }}"
+        DV="{{ ProveedorXML.DV }}"
+        SoftwareID="{{ ProveedorXML.SoftwareID }}"
+        SoftwareSC="{{ ProveedorXML.SoftwareSC }}" />
+
+    <CodigoQR>https://catalogo-vpfe.dian.gov.co/document/searchqr?documentkey={{ CUNE }}</CodigoQR>
+
+    <InformacionGeneral
+        Version="V1.0: Documento Soporte de Pago de Nómina Electrónica"
+        Ambiente="{{ InformacionGeneral.Ambiente }}"
+        TipoXML="102"
+        CUNE="{{ CUNE }}"
+        EncripCUNE="CUNE-SHA384"
+        FechaGen="{{ Periodo.FechaGen }}"
+        HoraGen="{{ InformacionGeneral.HoraGen }}"
+        PeriodoNomina="{{ InformacionGeneral.PeriodoNomina }}"
+        TipoMoneda="COP" />
+
+    <Empleador
+        RazonSocial="{{ Empleador.RazonSocial }}"
+        NIT="{{ Empleador.NIT }}"
+        DV="{{ Empleador.DigitoVerificacion }}"
+        Pais="{{ Empleador.Pais }}"
+        DepartamentoEstado="{{ Empleador.DepartamentoEstado }}"
+        MunicipioCiudad="{{ Empleador.MunicipioCiudad }}"
+        Direccion="{{ Empleador.Direccion }}" />
+
+    <Trabajador
+        TipoTrabajador="{{ Trabajador.TipoTrabajador }}"
+        SubtipoTrabajador="{{ Trabajador.SubtipoTrabajador }}"
+        AltoRiesgoPension="{{ 'true' if Trabajador.AltoRiesgoPension else 'false' }}"
+        Documento="{{ Trabajador.Documento }}"
+        PrimerApellido="{{ Trabajador.PrimerApellido }}"
+        PrimerNombre="{{ Trabajador.PrimerNombre }}"
+        LugarTrabajoPais="{{ Trabajador.LugarTrabajoPais }}"
+        LugarTrabajoDepartamentoEstado="{{ Trabajador.LugarTrabajoDepartamentoEstado }}"
+        LugarTrabajoMunicipioCiudad="{{ Trabajador.LugarTrabajoMunicipioCiudad }}"
+        Direccion="{{ Trabajador.Direccion }}"
+        Sueldo="{{ Trabajador.Sueldo }}"
+        CodigoTrabajador="{{ Trabajador.CodigoTrabajador }}" />
+
+    <Pago
+        Forma="{{ Pago.Forma }}"
+        Metodo="{{ Pago.Metodo }}" />
+
+    <FechasPagos> {% for fecha in FechasPagos %} <FechaPago>{{ fecha.FechaPago }}</FechaPago> {%
+        endfor %} </FechasPagos>
+
+    <Devengados>
+        <Basico DiasTrabajados="{{ Devengados.Basico.DiasTrabajados }}"
+            SueldoTrabajado="{{ Devengados.Basico.SueldoTrabajado }}" /> {% for trans in
+        Devengados.Transporte %} <Transporte AuxilioTransporte="{{ trans.AuxilioTransporte }}"
+            ViaticoManutAlojS="{{ trans.ViaticoManutAlojS }}" /> {% endfor %} {% for hed in
+        Devengados.HEDs %} <HED HoraInicio="{{ hed.HoraInicio }}" HoraFin="{{ hed.HoraFin }}"
+            Cantidad="{{ hed.Cantidad }}" Porcentaje="{{ hed.Porcentaje }}" Pago="{{ hed.Pago }}" />
+        {% endfor %} {% for hen in Devengados.HENs %} <HEN HoraInicio="{{ hen.HoraInicio }}"
+            HoraFin="{{ hen.HoraFin }}" Cantidad="{{ hen.Cantidad }}"
+            Porcentaje="{{ hen.Porcentaje }}" Pago="{{ hen.Pago }}" /> {% endfor %} </Devengados>
+
+    <Deducciones>
+        <Salud Porcentaje="{{ Deducciones.Salud.Porcentaje }}"
+            Deduccion="{{ Deducciones.Salud.Deduccion }}" />
+        <FondoPension
+            Porcentaje="{{ Deducciones.Pension.Porcentaje }}"
+            Deduccion="{{ Deducciones.Pension.Deduccion }}" /> {% for fsp in
+        Deducciones.FondoSolidaridad %} <FondoSP Porcentaje="{{ fsp.Porcentaje }}"
+            DeduccionSP="{{ fsp.DeduccionSP }}" DeduccionSub="{{ fsp.DeduccionSub }}" /> {% endfor
+        %} </Deducciones>
+
+    <DevengadosTotal>{{ Totales.DevengadoTotal }}</DevengadosTotal>
+    <DeduccionesTotal>{{ Totales.DeduccionesTotal }}</DeduccionesTotal>
+    <ComprobanteTotal>{{ Totales.TotalAPagar }}</ComprobanteTotal>
+    <!-- hola a -->
+
+</NominaIndividual>
