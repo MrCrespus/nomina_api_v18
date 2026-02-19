@@ -111,6 +111,5 @@
     <DevengadosTotal>{{ Totales.DevengadoTotal }}</DevengadosTotal>
     <DeduccionesTotal>{{ Totales.DeduccionesTotal }}</DeduccionesTotal>
     <ComprobanteTotal>{{ Totales.TotalAPagar }}</ComprobanteTotal>
-    <!-- hola a -->
 
 </NominaIndividual>

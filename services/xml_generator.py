@@ -4,7 +4,14 @@ from jinja2 import Environment, FileSystemLoader
 
 
 class XMLGenerator:
-    def __init__(self, templates_dir='templates'):
+    def __init__(self, templates_dir=None):
+        if templates_dir is None:
+            # Resolve absolute path to 'templates' dir relative to this file
+            # This file is in /services, so we go up one level to project root
+            base_dir = os.path.dirname(
+                os.path.dirname(os.path.abspath(__file__)))
+            templates_dir = os.path.join(base_dir, 'templates')
+
         self.env = Environment(loader=FileSystemLoader(templates_dir))
         self.template = self.env.get_template('nomina_dian.xml')
 
