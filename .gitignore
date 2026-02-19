@@ -12,7 +12,6 @@ env/
 output_xmls/
 *.log
 *.xml
-!dian_template.xml
 
 # IDE
 .vscode/
