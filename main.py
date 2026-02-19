@@ -170,12 +170,20 @@ def main():
                 except Exception as e:
                     print(f"      ❌ ERROR CRÍTICO al firmar XML: {e}")
 
-                # Save signed XML
                 numero_nomina = dian_json['NumeroSecuenciaXML']['Numero']
                 filename = f"nie_{numero_nomina}.xml"
-                file_path = xml_gen.save_to_file(xml_str, filename)
+
+                output_folder = r"d:\Codyd\api18\documents"
+                file_path = xml_gen.save_to_file(
+                    xml_str, filename, output_dir=output_folder)
 
                 print(f"      📄 XML Creado exitosamente: {file_path}")
+
+                try:
+                    repo.x_upload_xml_to_odoo(slip_id, filename, xml_str)
+                except Exception as upload_err:
+                    print(
+                        f"      ❌ ERROR al retornar XML a Odoo: {upload_err}")
 
             except Exception as e:
                 print(f"      ❌ Error en ID {slip_id}: {e}")

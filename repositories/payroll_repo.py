@@ -326,3 +326,35 @@ class PayrollRepository:
             'dian': dian_config,
             'certificate': cert_config
         }
+
+    def x_upload_xml_to_odoo(self, payslip_id, filename, xml_content):
+        import base64
+        print(
+            f"      [Repo] Retornando XML a Odoo Documents (ID {payslip_id})...")
+        encoded_xml = base64.b64encode(
+            xml_content.encode('utf-8')).decode('utf-8')
+        doc_vals = {
+            'name': filename,
+            'type': 'binary',
+            'datas': encoded_xml,
+            'res_model': 'hr.payslip',
+            'res_id': payslip_id,
+            'mimetype': 'application/xml',
+        }
+        try:
+            doc_id = self.client.execute(
+                'documents.document', 'create', [doc_vals])
+            if isinstance(doc_id, list) and len(doc_id) > 0:
+                doc_id = doc_id[0]
+            print(f"      [Repo] XML retornado a Odoo documents, ID: {doc_id}")
+            return doc_id
+        except Exception as e:
+            print(
+                f"      ⚠️ Error documents.document: {e}. Usando ir.attachment...")
+            attachment_id = self.client.execute(
+                'ir.attachment', 'create', [doc_vals])
+            if isinstance(attachment_id, list) and len(attachment_id) > 0:
+                attachment_id = attachment_id[0]
+            print(
+                f"      [Repo] XML retornado a Odoo, ID adjunto: {attachment_id}")
+            return attachment_id

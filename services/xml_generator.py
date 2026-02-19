@@ -23,8 +23,9 @@ class XMLGenerator:
         xml_content = self.template.render(data)
         return xml_content
 
-    def save_to_file(self, xml_content, filename):
-        output_dir = "output_xmls"
+    def save_to_file(self, xml_content, filename, output_dir=None):
+        if output_dir is None:
+            output_dir = "output_xmls"
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
