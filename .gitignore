@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+env/
+.env
+
+# Odoo/API specific
+output_xmls/
+*.log
+*.xml
+!dian_template.xml
+
+# IDE
+.vscode/
+.idea/
